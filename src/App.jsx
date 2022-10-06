@@ -5,7 +5,14 @@ function App() {
   const [people, setPeople] = useState(0);
   const [tip, setTip] = useState(0);
   const [customTip, setCustomTip] = useState(0);
-  const [active, setActive] = useState(false);
+  const [customTipAct, setCustomTipAct] = useState(false);
+  const [tips, setTips] = useState([
+    { value: 5, active: false },
+    { value: 10, active: false },
+    { value: 15, active: false },
+    { value: 25, active: false },
+    { value: 50, active: false },
+  ]);
 
   const handleBill = (e) => {
     setBill(e.target.value);
@@ -15,35 +22,44 @@ function App() {
     setPeople(e.target.value);
   };
 
-  const tips = [
-    { value: 5, active: false },
-    { value: 10, active: false },
-    { value: 15, active: false },
-    { value: 25, active: false },
-    { value: 50, active: false },
-  ];
-
   const handleTip = (e) => {
     setCustomTip(0);
+    setCustomTipAct(false);
+
     setTip(e.target.value);
 
-    tips.map((tip) => {
-      if (e.target.value == tip.value) {
-        return { ...tip, active: true };
-      } else return tip;
-    });
+    setTips((prev) =>
+      prev.map((tip) => {
+        if (e.target.value == tip.value) {
+          return { ...tip, active: true };
+        } else return { ...tip, active: false };
+      })
+    );
   };
 
   console.log(tips);
 
   const handleCustomTip = (e) => {
+    setCustomTipAct(true);
     setCustomTip(e.target.value);
+    setTips((prev) =>
+      prev.map((tip) => {
+        return { ...tip, active: false };
+      })
+    );
   };
 
   const handleReset = () => {
     setBill(0);
     setPeople(0);
     setTip(0);
+    setCustomTip(0);
+    setCustomTipAct(false);
+    setTips((prev) =>
+      prev.map((tip) => {
+        return { ...tip, active: false };
+      })
+    );
   };
 
   const finalTip = customTip ? customTip : tip;
@@ -77,8 +93,8 @@ function App() {
                   <button
                     value={tip.value}
                     key={tip.value}
-                    onClick={(e) => handleTip(e)}
-                    className={tip.active ? "active" : ""}
+                    onClick={handleTip}
+                    className={tip.active && !customTipAct ? "active" : ""}
                   >
                     {tip.value}%
                   </button>
@@ -101,13 +117,17 @@ function App() {
             </div>
 
             <div className="people-wrapper">
-              <label htmlFor="people">Number of People</label>
+              <div className="people-upper">
+                <label htmlFor="people">Number of People</label>
+                {people && people <= 0 ? <p>Can't be zero!</p> : ""}
+              </div>
               <input
                 type="text"
                 id="people"
                 placeholder={people}
                 value={people ? people : ""}
                 onChange={handlePeople}
+                pattern="[1-9]+"
               />
               <span className="icon-people"></span>
             </div>
@@ -148,7 +168,11 @@ function App() {
               </p>
             </div>
 
-            <button className="reset-button" onClick={handleReset}>
+            <button
+              className="reset-button"
+              onClick={handleReset}
+              disabled={bill ? "" : "true"}
+            >
               RESET
             </button>
           </div>

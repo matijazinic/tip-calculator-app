@@ -5,6 +5,13 @@
   box-sizing: border-box;
 }
 
+#root {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
 body {
   background-color: var(--clr-neut-light-gray);
 }
@@ -16,6 +23,8 @@ html {
 :root {
   --clr-primary: hsl(172, 67%, 45%);
   --clr-neut-very-dark: hsl(183, 100%, 15%);
+  --clr-neut-very-dark-dis: hsl(183, 100%, 20%);
+
   --clr-neut-dark-gray: hsl(186, 14%, 43%);
   --clr-neut-gray: hsl(184, 14%, 56%);
   --clr-neut-light-gray: hsl(185, 41%, 84%);
@@ -68,7 +77,6 @@ input:focus-visible {
 }
 
 .container {
-  max-width: 60rem;
   border-radius: 1.5rem;
   padding: 1.5rem;
   display: flex;
@@ -81,7 +89,7 @@ input:focus-visible {
   display: grid;
   align-items: center;
   gap: 5rem;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: 40% 1fr;
 }
 
 .information {
@@ -119,6 +127,19 @@ label,
 .people-wrapper {
   display: flex;
   flex-direction: column;
+}
+
+.people-upper {
+  display: flex;
+}
+
+.people-upper > p {
+  margin-left: auto;
+  color: red;
+}
+
+#people:invalid:focus-visible {
+  outline: 2px solid red;
 }
 
 .tips {
@@ -169,4 +190,48 @@ label,
   background-color: var(--clr-primary);
   color: var(--clr-neut-very-dark);
   margin-top: 2rem;
+}
+
+.reset-button:disabled {
+  background-color: var(--clr-neut-very-dark-dis);
+  cursor: not-allowed;
+}
+
+@media only screen and (max-width: 70em) {
+  .content {
+    padding: 1rem;
+    grid-template-columns: repeat(1, 1fr);
+  }
+
+  .tips {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .amount-wrapper .amount {
+    font-size: 2.5rem;
+  }
+}
+
+@media only screen and (max-width: 40em) {
+  .calculation {
+    padding: 1.5rem 1rem;
+  }
+
+  label,
+  .tips-title {
+    padding-inline: 1rem;
+  }
+
+  .tips {
+    padding-inline: 1rem;
+  }
+
+  input:not(#tip) {
+    margin-inline: 1rem;
+  }
+
+  .icon-bill::before,
+  .icon-people::before {
+    left: 2rem;
+  }
 }
